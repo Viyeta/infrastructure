@@ -353,11 +353,17 @@ resource "aws_instance" "ec2" {
                 echo "LOG_GROUP_NAME=${var.cloudwatch_log_group_name}" >> /etc/environment
                 EOF
 
-#   iam_instance_profile = aws_iam_instance_profile.s3_profile.name
+  iam_instance_profile = aws_iam_instance_profile.s3_profile.name
 
   tags = {
     Name = var.ec2_instance_tag
   }
+}
+
+# instance profile role policy and role-policy attachment
+resource "aws_iam_instance_profile" "s3_profile" {
+  name = var.s3_iam_profile_name
+  role = aws_iam_role.role.name
 }
 
 resource "aws_iam_role" "role" {
